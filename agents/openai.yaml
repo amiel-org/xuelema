@@ -1,0 +1,7 @@
+interface:
+  display_name: "xuelema"
+  short_description: "学习闭环助手：整理笔记、错题、试卷、题库、长期记忆和周复盘"
+  default_prompt: "Use $xuelema to process my learning vault, maintain long-term memory, and prepare verified weekly review handouts."
+
+policy:
+  allow_implicit_invocation: true

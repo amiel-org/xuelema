@@ -1,0 +1,46 @@
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.venv/
+venv/
+
+# Local/generated outputs
+output/
+tmp/
+temp/
+logs/
+*.log
+*.bak
+*.tmp
+*.download
+
+# Student/private source materials and generated deliverables
+*.pdf
+*.docx
+*.doc
+*.pptx
+*.ppt
+*.xlsx
+*.xls
+*.jpg
+*.jpeg
+*.png
+*.webp
+*.heic
+*.mp4
+*.mov
+*.wav
+*.mp3
+
+# Keep intentional skill assets explicit if needed later.
+!assets/
+!assets/learning-vault-template/
+
+# OS/editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
