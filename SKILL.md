@@ -68,6 +68,8 @@ Read `references/workflows.md` when executing a full note/homework/exam/question
 
 Run scripts from the skill directory or with absolute paths. Pass `--root <learning-vault>` unless the current working directory is already the user's learning vault.
 
+- `python -m pip install -r requirements.txt`: install Python dependencies for the scripts.
+- `scripts/install_local_skill.py --overwrite`: install this folder into the local Codex skills directory on the current computer.
 - `scripts/init_learning_vault.py --target <dir>`: copy the empty learning-vault template.
 - `scripts/validate_vault.py --root <dir>`: check the learning-vault structure.
 - `scripts/process_inbox.py --root <dir> scan`: list files in `临时文件/待处理`.
@@ -79,6 +81,10 @@ Run scripts from the skill directory or with absolute paths. Pass `--root <learn
 - `scripts/search_question_bank.py --root <dir> --subjects 数学 --knowledge 立体几何`: search local machine-tagged questions.
 
 Network download helpers are optional and should be used only when the user asks to build or refresh local Beijing mock-exam sources.
+
+## Local Install
+
+If the user copies this folder to another computer without GitHub, install it by placing the whole `xuelema` directory under `~/.codex/skills/` or by running `scripts/install_local_skill.py --overwrite` from inside the copied folder. Restart Codex after installation so the skill is discovered.
 
 ## Outputs
 

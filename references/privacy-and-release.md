@@ -9,6 +9,7 @@
 - `references/`
 - `scripts/`
 - `assets/learning-vault-template`
+- `requirements.txt`
 - `.gitignore`
 
 不要保存：
