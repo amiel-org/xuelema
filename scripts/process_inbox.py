@@ -105,7 +105,11 @@ def list_inbox_files(root: Path) -> list[Path]:
 
 
 def unique_target(path: Path) -> Path:
-    if not path.exists():
+    return _unique_target(path, set())
+
+
+def _unique_target(path: Path, reserved: set[Path]) -> Path:
+    if not path.exists() and path not in reserved:
         return path
     stem = path.stem
     suffix = path.suffix
@@ -113,7 +117,7 @@ def unique_target(path: Path) -> Path:
     i = 1
     while True:
         candidate = parent / f"{stem}_重复{i}{suffix}"
-        if not candidate.exists():
+        if not candidate.exists() and candidate not in reserved:
             return candidate
         i += 1
 
@@ -175,19 +179,41 @@ def normalize_kind(kind: str) -> str:
 def target_dir_for(root: Path, move: PlannedMove, process_date: str) -> Path:
     folder = normalize_kind(move.kind)
     if folder == "待确认":
-        return confirm_dir(root)
+        target = confirm_dir(root).resolve()
+        if not target.is_relative_to(root.resolve()):
+            raise ValueError("待确认目录必须位于资料库根目录内")
+        return target
     if move.subject not in SUBJECTS:
         raise ValueError(f"未知学科：{move.subject}；可用：{', '.join(SUBJECTS)}")
-    grade = move.grade or default_grade(process_date)
-    label = move.date_label or date_label_from_iso(process_date)
-    return root / move.subject / folder / grade / label
+    grade = _safe_component(move.grade or default_grade(process_date), "年级")
+    label = _safe_component(move.date_label or date_label_from_iso(process_date), "日期目录")
+    target = (root / move.subject / folder / grade / label).resolve()
+    if not target.is_relative_to(root.resolve()):
+        raise ValueError("归档目标必须位于资料库根目录内")
+    return target
+
+
+def _safe_component(value: str, label: str) -> str:
+    value = str(value).strip()
+    if not value or value in {".", ".."} or Path(value).name != value or any(ch in value for ch in "\\/:*?\"<>|\r\n"):
+        raise ValueError(f"{label}不能包含路径分隔符或非法字符：{value!r}")
+    return value
 
 
 def resolve_source(root: Path, filename: str) -> Path:
     path = Path(filename)
     if path.is_absolute():
-        return path
-    return inbox(root) / filename
+        raise ValueError(f"计划文件必须是待处理目录内的相对文件名：{filename}")
+    inbox_root = inbox(root).resolve()
+    lexical = inbox_root / path
+    if lexical == inbox_root or not lexical.absolute().is_relative_to(inbox_root):
+        raise ValueError(f"计划文件必须位于待处理目录内：{filename}")
+    if lexical.is_symlink():
+        raise ValueError(f"计划文件不能是符号链接：{filename}")
+    candidate = lexical.resolve()
+    if candidate == inbox_root or not candidate.is_relative_to(inbox_root):
+        raise ValueError(f"计划文件不能解析到待处理目录外：{filename}")
+    return candidate
 
 
 def apply_moves(
@@ -199,6 +225,7 @@ def apply_moves(
     dry_run: bool,
 ) -> list[dict[str, Any]]:
     results: list[dict[str, Any]] = []
+    reserved_targets: set[Path] = set()
     for move in moves:
         target_dir = target_dir_for(root, move, process_date)
         moved_paths: list[str] = []
@@ -207,10 +234,11 @@ def apply_moves(
 
         for filename in move.files:
             src = resolve_source(root, filename)
-            if not src.exists():
+            if not src.exists() or not src.is_file() or src.is_symlink():
                 missing.append(filename)
                 continue
-            dst = unique_target(target_dir / src.name)
+            dst = _unique_target(target_dir / src.name, reserved_targets)
+            reserved_targets.add(dst)
             planned_targets.append(str(dst))
             if not dry_run:
                 target_dir.mkdir(parents=True, exist_ok=True)

@@ -2,7 +2,7 @@
 
 面向北京高中生、可扩展到初中的学习闭环 Codex Skill。
 
-“学了吗”不只整理一份资料，而是把笔记、作业改错、试卷和题库串成可持续更新的学习记录：先知道学了什么，再知道会不会用，最后用后续练习验证是否真的改善。
+“学了么”不只整理一份资料，而是把笔记、作业改错、试卷和题库串成可持续更新的学习记录：先知道学了什么，再知道会不会用，最后用后续练习验证是否真的改善。
 
 ## 能做什么
 
@@ -11,6 +11,9 @@
 - 复盘试卷：输出家长版诊断、学生版反馈、本周重点和针对性练习。
 - 管理题库：对本地北京高考、区级模拟和学校试卷做文件校验、题号切分、机器初标和人工核验队列。
 - 维护长期学习记忆：持续追踪知识点、错因、笔记、作业改错和近期重点。
+- 联动学情目标底座：复用已复核的学习事件与五年真题目标索引，生成有来源、可锁定的联动候选；不自动判断掌握程度。
+- 登记与验收任务：通过 `learning_run.py` 记录输入范围、规则读取、审核、验收和发布，支持中断后续接及产物变更后的重新审核。
+- 支持月度与学期复盘：按统计期核对全部输入，区分事实、解释与待验证假设，不把资料分拣当成深度处理。
 - 生成周复盘四件套：家长版周报、学生打印版、真题练习和长期记忆更新。
 
 ## 设计原则
@@ -44,7 +47,7 @@ python scripts/install_local_skill.py --overwrite
    python scripts/init_learning_vault.py --target "D:\\LearningVault"
    ```
 
-2. 校验目录结构：
+2. 安装依赖并校验目录结构：
 
    ```powershell
    python scripts/validate_vault.py --root "D:\\LearningVault"
@@ -52,7 +55,9 @@ python scripts/install_local_skill.py --overwrite
 
 3. 将资料放入 `临时文件/待处理`，并在 Codex 中明确说“材料放好了，开始处理”。
 
-4. 使用 Skill 完成笔记、作业改错、试卷或题库工作流；每次处理后更新长期记忆和下次验证动作。
+4. 使用 Skill 完成笔记、作业改错、试卷或题库工作流；正式交付须经过任务登记、规则读取、审核、验收和发布，不能只生成草稿就标记完成。
+
+日常资料可先做 `triage` 识别分拣；周复盘、月度或学期复盘再从原始材料继续深度核验。学情目标联动只复用已复核记录，候选映射和机器标签不等于已掌握，也不自动放行学生练习。
 
 ## 依赖
 
@@ -66,7 +71,7 @@ python -m pip install -r requirements.txt
 xuelema/
 ├── SKILL.md                         # Skill 入口与核心规则
 ├── agents/openai.yaml               # Codex 展示信息
-├── scripts/                         # 初始化、校验、归档、题库处理脚本
+├── scripts/                         # 任务闭环、目标联动、初始化、校验、归档与题库工具
 ├── references/                      # 工作流、打印公式、隐私发布规范
 └── assets/learning-vault-template/  # 可复制的空学习资料库模板
 ```
@@ -74,6 +79,8 @@ xuelema/
 ## 进一步阅读
 
 - [完整 Skill 说明](SKILL.md)
+- [任务登记、审核与发布约定](references/run-contract.md)
+- [学习证据与五年真题目标联动](references/target-linking.md)
 - [资料、作业、试卷、题库与周复盘工作流](references/workflows.md)
 - [学生打印版与公式规则](references/print-and-formula.md)
 - [隐私与发布边界](references/privacy-and-release.md)
@@ -81,3 +88,12 @@ xuelema/
 ## 隐私说明
 
 这是一个公开的 Skill 仓库，只保存模板、脚本和规则。请不要将孩子的真实姓名、照片、课堂材料、学校内部资料、原卷 PDF 或生成的学生版交付物提交到 Git。
+
+## 验证
+
+```powershell
+python -m unittest discover -s scripts -p "test_*.py" -v
+python scripts/validate_vault.py --root assets/learning-vault-template
+```
+
+当前版本见 `version.json`。维护源、Codex 安装目录及其他客户端安装目录可用 `scripts/install_local_skill.py --check --dest <安装目录>` 核对，避免只更新一份就误认为全部生效。

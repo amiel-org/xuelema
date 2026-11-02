@@ -1,0 +1,67 @@
+{
+  "schema_version": 1,
+  "common_rules": [
+    "AGENTS.md",
+    "长期记忆/总索引.md",
+    "长期记忆/执行与验收规范.md",
+    "长期记忆/学习判断与证据规范.md"
+  ],
+  "modes": {
+    "triage": {
+      "rules": ["长期记忆/临时文件处理规范.md"],
+      "global_artifacts": ["routing_md"],
+      "subject_artifacts": [],
+      "updates": ["临时文件/处理日志.md"]
+    },
+    "inbox": {
+      "rules": ["长期记忆/临时文件处理规范.md", "长期记忆/三线联动学习闭环.md"],
+      "global_artifacts": ["routing_md"],
+      "subject_artifacts": [],
+      "updates": ["临时文件/处理日志.md", "长期记忆/当前重点看板.md"]
+    },
+    "notes": {
+      "rules": ["长期记忆/三线联动学习闭环.md"],
+      "global_artifacts": [],
+      "subject_artifacts": ["ocr_md", "notes_md", "cards_md"],
+      "updates": ["长期记忆/笔记追踪.md", "长期记忆/知识点总索引.md", "长期记忆/当前重点看板.md"]
+    },
+    "homework": {
+      "rules": ["长期记忆/三线联动学习闭环.md"],
+      "followup_rules": ["长期记忆/复盘工作流模板.md", "长期记忆/学生打印版规范.md", "长期记忆/练习题源与核验规范.md"],
+      "followup_subject_artifacts": ["feedback_md", "feedback_docx"],
+      "followup_updates": ["长期记忆/知识点追踪.md", "长期记忆/复盘日志.md"],
+      "global_artifacts": [],
+      "subject_artifacts": ["correction_md", "cards_md"],
+      "updates": ["长期记忆/作业改错追踪.md", "长期记忆/错因追踪.md", "长期记忆/当前重点看板.md"]
+    },
+    "exam": {
+      "rules": ["长期记忆/试卷技能规范.md", "长期记忆/三线联动学习闭环.md", "长期记忆/练习题源与核验规范.md"],
+      "global_artifacts": [],
+      "subject_artifacts": ["parent_md", "feedback_md", "practice_md"],
+      "updates": ["长期记忆/知识点追踪.md", "长期记忆/错因追踪.md", "长期记忆/复盘日志.md", "长期记忆/当前重点看板.md"]
+    },
+    "weekly": {
+      "rules": ["长期记忆/复盘工作流模板.md", "长期记忆/学生打印版规范.md", "长期记忆/练习题源与核验规范.md", "长期记忆/三线联动学习闭环.md", "长期记忆/当前重点看板.md"],
+      "global_artifacts": ["overview_md", "parent_md", "coverage_md", "practice_md", "memory_md"],
+      "subject_artifacts": ["summary_md", "student_md", "student_docx", "answer_md", "answer_docx"],
+      "updates": ["长期记忆/知识点追踪.md", "长期记忆/错因追踪.md", "长期记忆/复盘日志.md", "长期记忆/当前重点看板.md"]
+    },
+    "practice": {
+      "rules": ["长期记忆/学生打印版规范.md", "长期记忆/练习题源与核验规范.md", "长期记忆/当前重点看板.md"],
+      "global_artifacts": ["practice_md"],
+      "subject_artifacts": ["student_md", "student_docx", "answer_md", "answer_docx"],
+      "updates": ["长期记忆/复盘日志.md", "长期记忆/当前重点看板.md"]
+    },
+    "review": {
+      "rules": ["长期记忆/复盘工作流模板.md", "长期记忆/学生打印版规范.md", "长期记忆/练习题源与核验规范.md", "长期记忆/当前重点看板.md"],
+      "global_artifacts": ["student_review_md", "student_review_docx", "student_practice_md", "student_practice_docx", "answer_md", "answer_docx", "memory_md"],
+      "subject_artifacts": [],
+      "updates": ["长期记忆/复盘日志.md", "长期记忆/当前重点看板.md"]
+    }
+  },
+  "input_roles": {
+    "notes": ["ocr_md", "notes_md", "cards_md"],
+    "homework": ["correction_md", "cards_md"],
+    "exam": ["parent_md", "feedback_md", "practice_md"]
+  }
+}

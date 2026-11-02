@@ -1,35 +1,30 @@
-# Final Output Rules
+# 正式学生文件与审核
 
-This file records the rules for student-facing deliverables.
+先读资料库 长期记忆/学生打印版规范.md 和 练习题源与核验规范.md；通用文件处理使用当前实际可用的 documents / pdf 技能，不能引用不存在的 doc 技能名称。
 
-## Delivery order
+## 内容与题源
 
-1. Create a DOCX master first.
-2. Export PDF only if the environment can render it reliably.
-3. Keep Markdown as the archive/source draft.
+- 学生版放知识整理、自测问题、题干、图示、作答区及不泄题的提醒。练习答案、卡片答案、解析单独放答案版。
+- 做完后的孩子反馈使用 feedback_md/feedback_docx，标“做完后核对”，可以给已完成题目的答案与必要讲评；与待独立作答的学生练习分文件。逐项内容按资料库学生打印版规范，不能用后台判断或通用答案册代替实际作答反馈。
+- 讲解可以使用必要例子，但不能在紧邻自测处直接暴露目标答案；须按练习内容检查，不能只搜索“答案”二字。
+- 原题、标准答案分别保留可定位来源；图、表、材料和题干条件完整。节选明确标范围，不能删掉解题必要条件。
+- 学科审查核结论、推导条件、单位与符号；进度审查核已学前置知识、训练目的和必做总用时。
 
-## Question source
+## 排版
 
-- Prefer real questions from the local question bank.
-- Prefer Beijing Gaokao, Beijing district exams, and Beijing school papers.
-- If a question is adapted, label it clearly as an adapted question.
-- Do not use an unverified generated question as a final student-facing item.
+- 正式学生件用 DOCX；能稳定渲染时可附 PDF。MD 作归档与编辑源稿。
+- 真上下标、分式、希腊字母、向量、化学式和离子电荷。不能把未转换的 v_0、x^2、LaTeX 命令当最终排版。
+- 题目所需图示必须在题目附近清楚可读。提供原图裁切或准确重绘；不能用装饰图替代数据和结构。
+- 检查所有页：截断、跨页题干与题图分离、表格过宽、缺字体、黑方框、空白异常、字号、作答空间、答案串入学生文件。
 
-## Formula rules
+## 审核记录
 
-- Use true subscripts and superscripts in final Word/PDF output.
-- Use real fractions, Greek letters, vectors, and units.
-- Markdown source may use plain text notation only as an editing draft.
-- Final output should render as proper math, not as raw ASCII placeholders.
+在任务目录记录对照的原图/原卷位置、发现、修复及残留限制。用 learning_run.py review 记录实际文件指纹：
 
-## Diagram rules
+- content：内容准确、输入覆盖、事实/判断区分、记忆拟更新有依据。
+- source：逐道练习核原题、材料/图、标准答案、符号和节选条件。
+- learning：目标与学情对应、已学进度、题量/时间、答案隔离。
+- 反馈 MD/DOCX 同时需要 content、source、learning：逐项核原始作答、标准答案、实际反馈正文、错因确定程度及下次标准。DOCX另做layout，清单齐全不等于正文已核对。
+- layout：渲染 PDF 与逐页 PNG；每份正式 DOCX/PDF 单独记录其全部页图。
 
-- Include a clear diagram when the problem depends on geometry, forces, motion, graphs, flow, structure, or experimental apparatus.
-- Use deterministic line diagrams, clean redraws, tables, or flowcharts.
-- Do not rely on decorative images when the student needs to inspect the structure of the problem.
-
-## Cleanliness rules
-
-- Do not put OCR transcripts, file paths, or admin notes into the final child-facing version.
-- Keep the final version short, concrete, and ready to print.
-- Check that the layout is readable before delivery.
+程序验证这些记录是否对应当前文件及所列来源，不证明审查结论正确。内容改动后重审，不能复制一份旧“通过”记录到新文件。审核证据保存在任务目录，不混进学生件。

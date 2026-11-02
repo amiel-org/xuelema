@@ -1,96 +1,89 @@
 ---
 name: xuelema
-description: "面向北京高中、可扩展到初中的学习闭环技能。Use when Codex needs to process a student's learning inbox, organize class notes, diagnose homework or exams, maintain long-term learning memory, build/search/tag local question banks, prepare weekly reviews, or generate student-facing DOCX/PDF handouts with verified real questions."
+description: "学了么：按学习资料库现行规范处理笔记、作业、试卷、题库和周复盘，生成有原始证据、经核验的学生讲义与长期记录。用于放好了、整理学习资料、作业改错、试卷诊断、周打印版、学习复盘及维护本技能；普通聊天和单纯查资料不启动整套交付。"
 ---
 
-# xuelema
+# 学了么
 
-## Purpose
+把资料变成“学过什么 → 实际表现 → 少量有效训练 → 独立验证 → 更新状态”的闭环。北京高中为默认适用范围，其他学段按资料库配置调整。
+版本见 version.json。资料库保存孩子资料；技能只保存通用规则、模板和程序。
 
-`xuelema` 的定义是：学了吗，先知道学了什么，再知道会不会用。
+## 启动与范围
 
-目标是把学习资料变成一个可持续更新的闭环：资料进入 -> 识别 -> 归档 -> 诊断 -> 追踪 -> 复盘 -> 下次验证。默认面向北京高中生，初中可复用同一套结构，但不硬套高考题源。
+1. 确认资料库根目录；优先用户指定位置，否则使用当前工作区。
+2. 先读根目录的 高中学习总索引.md（或 学习总索引.md）与 长期记忆/总索引.md，再按 mode 读取专项规范：`triage` 只读临时文件处理规范；笔记/作业/试卷/周复盘/练习再读执行与验收、学习判断及相应专项规范。读取当前学期规划与当前重点看板时，区分实际进度、计划和历史记录。
+3. 有 长期记忆/学了么配置.json 时，按其中 skill_source 找维护源。用该源的 scripts/install_local_skill.py --check 检查安装一致性；发现差异先按已有授权同步，再读取已安装版本。没有维护源的独立安装可直接使用，但记录版本。
+4. 判断用户要的是资料处理、打印交付、查询讨论还是系统维护。查询/讨论不建立运行清单，不自动出周报；系统维护做适当验证，不重处理孩子资料。用户已说“放好了/开始处理”等即已授权本批处理，不反复确认。
+5. 新任务、换模型、会话压缩或中断后，读取实际文件和未完成任务记录。不能只凭上一条回复续做。范围或规则已变化时，新建明确关联的修订任务；保留旧记录，不能改旧指纹使检查通过。
 
-## First Steps
+## 必守边界
 
-1. 确认学习资料库根目录。若用户没有指定，优先使用当前工作目录。
-2. 若存在，先读 `学习总索引.md` 或 `高中学习总索引.md`，再读 `长期记忆/总索引.md`。
-3. 只有用户明确说材料已放好、可以处理、开始扫描，才处理 `临时文件/待处理`。
-4. 不把真实笔记、照片、课件、原卷 PDF、孩子个人资料写入技能仓库；这些只存在用户自己的资料库。
+- 原图/原卷与可定位的作答是判断依据。笔记缺记录不能认定没学过；笔记出现不能认定掌握；红笔不能自动认定老师批改；重拍不能算再次出错；订正不能直接记为改善。
+- 分开记录事实、解释与待验证假设。给孩子贴“薄弱/反复薄弱/已改善”等标签前，执行资料库的证据规范；保留做对与改善的证据。
+- 归档完整，训练按优先级和用时安排。题量、卡片数量是参考，不能为了凑数增加负担或虚构错点。
+- 正式训练默认使用已核验原题/节选。机器标签只筛候选；核对题干、题图/材料、标准答案、符号和已学前置知识。没有题源时记录限制，继续可完成部分；改编/自编须已有明确授权。
+- 学生练习与答案分文件；正式学生打印件用 DOCX，Markdown 留作归档。原题依赖的图和材料不得省略。打印前检查渲染的每一页。
+- 长期学习状态按新增证据更新；规则和长期规划修改按用户授权，不能用模型名称代替权限判断。用户已授权的系统升级直接执行。
+- 不把真实孩子资料、原卷、运行记录或生成成品写入技能仓库。不改变用户未授权的原始资料，不覆盖同名原图。
 
-## Core Rules
+## 任务路由
 
-1. 默认中文输出。
-2. 北京高中优先；初中只复用框架，题源和学段标签按实际补充。
-3. 笔记、作业改错、试卷三线分开，只通过知识点、错因和长期记忆联动。
-4. 题库原卷不上传技能仓库；技能只保留目录模板、规则和脚本。
-5. 机器标签只用于筛题，不直接进入孩子版定稿。
-6. 正式给孩子看的内容必须核验题干、图示/材料、答案、公式和符号。
-7. 不默认自编题；高中优先北京高考真题、北京一模二模、北京学校卷。
-8. Markdown 只作归档源稿；给孩子看的正式版本优先 DOCX，必要时再导出 PDF。
-9. 每次处理后更新长期记忆，不停留在单次输出。
+完整流程读 [workflows.md](references/workflows.md)；任务登记、清单字段与命令读 [run-contract.md](references/run-contract.md)。程序必需项由 references/workflow-contract.json 定义。日常归档、周末复盘、结果回传的简短用法见 [user-prompts.md](references/user-prompts.md)；口令只选择流程和范围，具体细则以本技能与工作区现行规范为准。
 
-## Workflow
+| 任务 | mode | 还需读取的工作区规则 |
+|---|---|---|
+| 日常照片识别、预索引和归档 | triage | 临时文件处理规范；可做轻量 OCR/摘要识别，不宣称完成笔记/作业/试卷深度处理 |
+| 新资料分拣并处理 | inbox | 临时文件处理规范、三线联动；识别为试卷时追加试卷规范 |
+| 课堂笔记 | notes | 三线联动、相关学科/学期索引 |
+| 作业改错 | homework | 三线联动、相关作业与笔记索引 |
+| 试卷诊断 | exam | 试卷规范、三线联动、题源核验规范 |
+| 周复盘/学生打印 | weekly | 复盘工作流模板、学生打印版规范、题源核验规范、三线联动、当前重点看板 |
+| 回做结果/独立验证 | homework | 登记 followup=true，关联原周计划；追加复盘规则及知识点追踪/复盘日志更新，不自动重出周报 |
+| 定向练习 | practice | 题源核验规范、学生打印版规范、当前重点看板 |
+| 月度/学期复盘 | review | 复盘工作流模板、学生打印版规范、题源核验规范、当前重点看板及期间记录 |
 
-```mermaid
-flowchart LR
-    A["用户说材料放好了"] --> B["扫描临时文件/待处理"]
-    B --> C["判断学科、年级、资料类型"]
-    C --> D{"类型"}
-    D --> E["笔记"]
-    D --> F["作业改错"]
-    D --> G["试卷/测验"]
-    D --> H["待确认"]
-    E --> I["OCR校对稿、整理版、复习卡片"]
-    F --> J["错处、知识点、错因、正确做法"]
-    G --> K["家长诊断、学生反馈、针对练习"]
-    H --> L["待确认说明"]
-    I --> M["更新长期记忆"]
-    J --> M
-    K --> M
-    L --> M
-    M --> N["周复盘、学生打印版、下次验证"]
-```
+专项规范均位于资料库 长期记忆/。不要每次加载所有历史日志或题库全文。
 
-```mermaid
-flowchart LR
-    Q["放入或下载题库原卷"] --> R["文件头校验与归档"]
-    R --> S["题号切分与机器标签化"]
-    S --> T["题目索引、知识点索引"]
-    T --> U["AI筛题核验队列"]
-    U --> V["回原PDF核验题干、图示、答案"]
-    V --> W["进入周练或学生打印版"]
-```
+`triage` 的 `routing_md` 是本批识别预索引，不是只写“已移动”的回执。它应让后续模型能找到每组资料的学科、类型、页序/重复关系、标题或章节、题号范围、候选主题、清晰度/完整性风险、作答或批注是否存在，以及下一步路由和待核位置。识别线索可以来自视觉读取或轻量 OCR；最终 OCR 校对、逐题判错和学情判断仍走后续流程。
 
-Read `references/workflows.md` when executing a full note/homework/exam/question-bank/weekly-review workflow. Read `references/print-and-formula.md` before producing student-facing DOCX/PDF. Read `references/privacy-and-release.md` when maintaining the skill repository or preparing a Git release.
+`weekly` 先回看上期目标与已有回传，再据本周证据选少量目标。每个本周重点必须关联至少一道与弱项匹配、逐题核验过的北京高考原题或条件完整的原题节选；卡片、校内旧题或 `practice_limits` 不能替代。即使本周没有明确强化重点，整份周打印版也至少保留一道北京高考原题或完整节选，按本周知识点或历史待验证弱项选取。家长版开头给出可直接执行的顺序、完整用时、通过/停止标准；用 `weekly_plan` 关联必做真题和活动，并对照正文审核。上期无回传不阻断本周可靠交付，但效果须记待验证，不自动加量。详见工作区复盘工作流模板。
 
-## Scripts
+`weekly` 只发布本周待独立完成的学生练习与独立答案，不预生成“做完后核对”反馈。家长回传本周学生版作答后，另以 `homework + followup=true` 登记并判卷，再生成孩子反馈 MD/DOCX、判断独立性并更新学习状态。反馈写清对错、错点/做对处、错因及确定程度、正确答案/标准要点、最小修正动作和下次通过标准，并标“做完后核对”。字段和核验见 run-contract.md，正文要求见工作区学生打印版规范。
 
-Run scripts from the skill directory or with absolute paths. Pass `--root <learning-vault>` unless the current working directory is already the user's learning vault.
+`review` 不是把每科各出一道题，而是先对统计期间的全部资料做深度复盘，再按实际重点选择多个短题或综合题。正式交付为学生月度复盘册、学生验证练习、独立答案和内部记忆更新，不要求家长版。期间最后一周的资料也属于本批范围：如果此前只有 `triage` 识别预索引，必须在 `review` 中继续完成必要的深度识别、OCR/内容核对、知识点归纳、作答判定和证据记录，不能当作已深度处理或只作引用；已经完成深度处理的资料可以复用，但要回原材料复核关键判断。复盘册中的知识点表必须区分“接触、已有表现、已改善、基本掌握、薄弱、待验证”等状态，并保留证据位置、做对处、典型错点和下次验证。训练用时按内容和证据决定；题目记录建议用时与分段停点，但 `review` 不设固定总时长上限，不能为了压时间删掉必要的覆盖。原题、原文、材料、图表、选项和条件必须完整或明确标注节选；名著、阅读和材料题不得只保留概括句。详见工作区复盘工作流模板和 `run-contract.md` 的 `review_plan`。
 
-- `python -m pip install -r requirements.txt`: install Python dependencies for the scripts.
-- `scripts/install_local_skill.py --overwrite`: install this folder into the local Codex skills directory on the current computer.
-- `scripts/init_learning_vault.py --target <dir>`: copy the empty learning-vault template.
-- `scripts/validate_vault.py --root <dir>`: check the learning-vault structure.
-- `scripts/process_inbox.py --root <dir> scan`: list files in `临时文件/待处理`.
-- `scripts/process_inbox.py --root <dir> apply-plan plan.json`: move inbox files after the Agent has made and reviewed a JSON plan.
-- `scripts/setup_all_subject_question_banks.py --root <dir>`: create six-subject Beijing question-bank skeletons.
-- `scripts/tag_mock_questions_all_subjects.py --root <dir>`: create machine question labels from local mock-exam PDFs.
-- `scripts/build_ai_question_review_queue.py --root <dir>`: build AI review queues from machine labels.
-- `scripts/make_ai_question_review_pack.py --root <dir> --subject 物理 --keywords 机械能`: create a source-checking pack for selected candidate questions.
-- `scripts/search_question_bank.py --root <dir> --subjects 数学 --knowledge 立体几何`: search local machine-tagged questions.
+## 真题精标与知识点索引维护
 
-Network download helpers are optional and should be used only when the user asks to build or refresh local Beijing mock-exam sources.
+此任务先读[精标维护路由](references/question-marking.md)，再读资料库配置`question_workflow`指定的现行规范；没有配置不照抄其他工作区路径。遵守用户指定的外部人工协作方式，不将WorkBuddy模型名误当内部子代理。每轮最终回复直接展示接收角色称呼开头的完整复制代码块与交接链接，不能只生成文件等待追问；详细按精标维护路由。默认卷内参考答案、不全量重新解题；索引发布与学生交付分开。
 
-## Local Install
+## 学习证据与五年真题联动
 
-If the user copies this folder to another computer without GitHub, install it by placing the whole `xuelema` directory under `~/.codex/skills/` or by running `scripts/install_local_skill.py --overwrite` from inside the copied folder. Restart Codex after installation so the skill is discovered.
+需要把既往/本周知识点、错因与五年真题目标接入时，先读[联动规范](references/target-linking.md)。一次识别、长期复用；历史只补关系，每周只接增量，默认不重读图片/PDF、不重做旧周复盘。工具只校验和关联结构化记录，不自动判掌握；历史初始化须有原始输入去向账、事件去重、语义映射和异常队列，普通模型只产候选、旗舰审唯一映射与异常，不能为覆盖率强挂目标。实际给学生选题仍须核完整题面、图材、答案与已学前置。
 
-## Outputs
+## 模型无关分工
 
-- 笔记：`OCR校对稿`、`整理版`、`复习卡片`、`笔记索引`
-- 作业改错：`改错诊断`、`错因`、`正确做法`、`复习卡片`
-- 试卷：`家长版诊断`、`学生版反馈`、`本周重点`、`针对性练习`
-- 周复盘：`家长版周报`、`学生打印版`、`真题练习`、`长期记忆更新`
-- 题库：`题目标签索引`、`知识点索引`、`OCR与人工校对清单`、`AI筛题核验队列`
-- 长期记忆：`知识点追踪`、`错因追踪`、`笔记追踪`、`作业改错追踪`、`错题-笔记联动表`、`当前重点看板`、`复盘日志`、`规则变更记录`
+模型名称随版本和账户变化，不把名称写成流程权限。按实际能力选择：`vision_fast` 适合照片分拣和轻量 OCR/预索引，`vision_reasoning` 适合清晰的作业初判，`deep_review` 适合试卷诊断、周复盘、题源核验和学生打印件，`independent_verifier` 适合对高风险内容做第二轮检查。手写模糊、题图/公式、跨页条件、老师批注不清或需要更新长期状态时，提升到更强能力档位；若模型不具备同一资料库读写和脚本调用能力，只能提供待核意见，不能算正式流程已完成。
+
+## 固定执行入口
+
+1. 明确资料范围，写 scope.json，运行 scripts/learning_run.py start --root <资料库> --scope <scope.json>。登记程序扫描范围并记录全部文件指纹、规则版本、必交付项和更新前状态。
+2. 紧接着运行 scripts/learning_run.py read-rules --run <任务目录>，实际读取本批选中的规则并留下运行事件；没有这一步不得进入验收或发布。
+3. 对照原材料逐项处理，在 任务记录/<批次>/run.json 记录去向、独立学习事件、知识点与产物。草稿和拟更新的记忆文件写入该批次 staged/。
+4. 学科内容核验与生成分开做一次检查。准备审核记录后，调用 review 绑定实际文件。正式文档按 [print-and-formula.md](references/print-and-formula.md) 做内容、原题、适配和逐页版式检查。
+5. validate 未通过则修复。验证器只能检验结构、对应关系、明显错误与审核时效，不能证明题目/诊断一定正确；不能用一句“已核验”代替审核。
+6. 通过后用 release 发布。需要更新已有正式文件时，使用已授权范围内的 --replace；程序保留旧文件，并核查记忆更新前状态。禁止绕过入口直接把草稿当正式交付。
+7. 结束说明实际处理范围、正式文件、验收结果、仍待核项与孩子下一步。部分待核须明确，不写“全部完成”。
+
+已有旧资料可正常检索；不为补新格式而批量重写历史。旧交付未登记为新运行记录，不能事后伪造核验通过。
+
+## 可复用工具
+
+- scripts/learning_run.py：start / read-rules / status / review / validate / release。
+- scripts/install_local_skill.py：安全安装、保留旧版本、--check 比对安装与维护源。
+- scripts/validate_vault.py --root <dir>：仅检查目录结构，不作为交付验收。
+- scripts/process_inbox.py --root <dir>：scan / apply-plan；移动前先 dry-run。
+- scripts/search_question_bank.py、make_ai_question_review_pack.py：筛候选与准备回原卷核验材料。
+- scripts/target_linker.py：复用经复核的结构化证据和五年目标索引，生成联动候选及历史覆盖账；不识别图片、不判学情、不放行题目。
+- 题库初始化/下载/标签化脚本仅在需要建库或刷新题库时使用，不每次重建。
+
+维护技能及安装包前读 [privacy-and-release.md](references/privacy-and-release.md)。仓库与安装内容须同步；不得修改一份就宣布升级全部生效。
