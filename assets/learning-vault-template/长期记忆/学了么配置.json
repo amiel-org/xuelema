@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "skill_source": "xuelema",
-  "expected_skill_version": "0.5.1",
+  "expected_skill_version": "0.8.0",
   "term_plan": "",
   "default_subjects": [],
   "current_board": "长期记忆/当前重点看板.md"

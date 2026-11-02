@@ -1,0 +1,62 @@
+{
+  "schema_version": 1,
+  "meta": {
+    "title": "学了么学情看板",
+    "mode": "demo",
+    "student_label": "示例学生",
+    "term": "高二上学期",
+    "updated_at": "2026-11-02",
+    "review_period": "2026年10月",
+    "review_date": "2026-10-31",
+    "notice": "全部为虚构演示数据，不代表任何真实学生的学情。接入个人资料后，请仅在受信任的本地环境运行。"
+  },
+  "locks": {
+    "learning_state_changed": false,
+    "child_ready": false,
+    "formal_bank_release": false,
+    "student_release": false
+  },
+  "subjects": [
+    {"name":"语文","icon":"文","color":"#a75d4c","reviewed_targets":2,"focus":"论述文本的证据与结构","next_action":"用一段原文说明观点与论据怎样衔接。"},
+    {"name":"数学","icon":"数","color":"#417c72","reviewed_targets":2,"focus":"数列递推关系的建立","next_action":"完成一道递推建模题，并写清定义域和边界。"},
+    {"name":"英语","icon":"英","color":"#6075a5","reviewed_targets":2,"focus":"语篇指代与上下文逻辑","next_action":"回读一段短文，标出连接词和指代依据。"},
+    {"name":"物理","icon":"物","color":"#647d91","reviewed_targets":2,"focus":"实验图像与条件核验","next_action":"根据图像说明变量关系，并核对单位和实验条件。"},
+    {"name":"化学","icon":"化","color":"#887353","reviewed_targets":2,"focus":"实验流程中的证据链","next_action":"解释一个实验现象，区分观察、推断与结论。"},
+    {"name":"生物","icon":"生","color":"#5f8764","reviewed_targets":2,"focus":"实验对照与结果解释","next_action":"指出对照组和自变量，再解释结果能支持什么。"}
+  ],
+  "targets": [
+    {"id":"DEMO-CN-001","subject":"语文","group":"现代文阅读","name":"观点与论据的关系","status":"have","summary":"能在示例材料中找到论据，仍需完整说明论证关系。","evidence":[{"date":"2026-10-28","type":"示例作业","fact":"正确标出一处分论点。","source":"demo://evidence/cn-001"}],"records":["DEMO-Q-CN-2026-01"]},
+    {"id":"DEMO-CN-002","subject":"语文","group":"现代文阅读","name":"重要概念的含义","status":"linked","summary":"仅有目标关联，尚无可确认的学习表现。","evidence":[],"records":["DEMO-Q-CN-2024-01"]},
+    {"id":"DEMO-MA-001","subject":"数学","group":"数列","name":"递推关系的建立","status":"wait","summary":"示例作答能算出结果，但定义域说明不完整。","evidence":[{"date":"2026-10-29","type":"示例试卷","fact":"递推式列写正确，未说明项数范围。","source":"demo://evidence/ma-001"}],"records":["DEMO-Q-MA-2025-01"]},
+    {"id":"DEMO-MA-002","subject":"数学","group":"函数","name":"函数图像与性质","status":"improve","summary":"连续两次示例训练中都能由图像判断单调区间。","evidence":[{"date":"2026-10-25","type":"示例练习","fact":"独立完成单调区间判断。","source":"demo://evidence/ma-002"}],"records":["DEMO-Q-MA-2023-01"]},
+    {"id":"DEMO-EN-001","subject":"英语","group":"阅读理解","name":"上下文指代","status":"have","summary":"能借助上下文确定示例语篇中的指代对象。","evidence":[{"date":"2026-10-26","type":"示例阅读","fact":"选出正确对象并划出原文依据。","source":"demo://evidence/en-001"}],"records":["DEMO-Q-EN-2026-01"]},
+    {"id":"DEMO-EN-002","subject":"英语","group":"阅读理解","name":"语篇逻辑连接","status":"linked","summary":"仅有目录关联，不推断掌握情况。","evidence":[],"records":["DEMO-Q-EN-2022-01"]},
+    {"id":"DEMO-PH-001","subject":"物理","group":"实验探究","name":"图像中的变量关系","status":"wait","summary":"趋势判断正确，单位与实验条件还需补充。","evidence":[{"date":"2026-10-27","type":"示例实验","fact":"写出正相关趋势，漏写控制条件。","source":"demo://evidence/ph-001"}],"records":["DEMO-Q-PH-2025-01"]},
+    {"id":"DEMO-PH-002","subject":"物理","group":"力学","name":"受力分析","status":"none","summary":"没有足够证据，不显示为薄弱。","evidence":[],"records":["DEMO-Q-PH-2024-01"]},
+    {"id":"DEMO-CH-001","subject":"化学","group":"化学实验","name":"观察、推断与结论","status":"improve","summary":"能够区分直接观察与进一步推断。","evidence":[{"date":"2026-10-30","type":"示例实验","fact":"分别记录现象和推断，并注明限制。","source":"demo://evidence/ch-001"}],"records":["DEMO-Q-CH-2026-01"]},
+    {"id":"DEMO-CH-002","subject":"化学","group":"化学反应原理","name":"条件对平衡的影响","status":"linked","summary":"待关联到已复核学习证据。","evidence":[],"records":["DEMO-Q-CH-2023-01"]},
+    {"id":"DEMO-BI-001","subject":"生物","group":"实验设计","name":"对照与变量控制","status":"have","summary":"能识别示例实验的对照组和自变量。","evidence":[{"date":"2026-10-30","type":"示例实验","fact":"正确指出对照组及一个需控制的变量。","source":"demo://evidence/bi-001"}],"records":["DEMO-Q-BI-2025-01"]},
+    {"id":"DEMO-BI-002","subject":"生物","group":"稳态与调节","name":"调节过程的结果解释","status":"linked","summary":"目标关系候选，不能作为确认学情。","evidence":[],"records":["DEMO-Q-BI-2022-01"]}
+  ],
+  "records": [
+    {"id":"DEMO-Q-CN-2026-01","subject":"语文","year":2026,"target_ids":["DEMO-CN-001"],"question_no":"示例1","title":"分析一段论述文字中论据的作用","prompt":"阅读一段由使用者自行准备的材料，指出观点、论据及两者的联系。本题仅演示索引和打印，不含真实考试题目。"},
+    {"id":"DEMO-Q-CN-2024-01","subject":"语文","year":2024,"target_ids":["DEMO-CN-002"],"question_no":"示例2","title":"结合语境解释重要概念","prompt":"为自选材料中的概念写出语境义，并标出解释依据。虚构演示条目。"},
+    {"id":"DEMO-Q-MA-2025-01","subject":"数学","year":2025,"target_ids":["DEMO-MA-001"],"question_no":"示例1","title":"由情境建立递推关系","prompt":"某示例序列首项为2，后一项比前一项的2倍少1。写出递推关系及适用的项数范围。虚构演示条目。"},
+    {"id":"DEMO-Q-MA-2023-01","subject":"数学","year":2023,"target_ids":["DEMO-MA-002"],"question_no":"示例2","title":"函数图像与单调性","prompt":"为自选函数绘制图像，说明单调区间及判断依据。虚构演示条目。"},
+    {"id":"DEMO-Q-EN-2026-01","subject":"英语","year":2026,"target_ids":["DEMO-EN-001"],"question_no":"示例1","title":"Identify a reference in context","prompt":"Choose a short passage supplied by the user. Identify one pronoun's reference and underline the contextual evidence. Demo only."},
+    {"id":"DEMO-Q-EN-2022-01","subject":"英语","year":2022,"target_ids":["DEMO-EN-002"],"question_no":"示例2","title":"Explain a logical connector","prompt":"Select a connector from a user-provided passage and explain its logical role. Demo only."},
+    {"id":"DEMO-Q-PH-2025-01","subject":"物理","year":2025,"target_ids":["DEMO-PH-001"],"question_no":"示例1","title":"由实验图像说明变量关系","prompt":"为自绘示例图像写出趋势、单位和成立条件。虚构演示条目。"},
+    {"id":"DEMO-Q-PH-2024-01","subject":"物理","year":2024,"target_ids":["DEMO-PH-002"],"question_no":"示例2","title":"画出研究对象的受力示意图","prompt":"为静止在水平面上的示例物体画受力示意图，并说明各力的施力物体。虚构演示条目。"},
+    {"id":"DEMO-Q-CH-2026-01","subject":"化学","year":2026,"target_ids":["DEMO-CH-001"],"question_no":"示例1","title":"区分实验现象和推断","prompt":"将一个自选实验记录分为直接观察、推断和结论三栏。虚构演示条目。"},
+    {"id":"DEMO-Q-CH-2023-01","subject":"化学","year":2023,"target_ids":["DEMO-CH-002"],"question_no":"示例2","title":"说明条件改变的影响","prompt":"为自选可逆反应设计条件对比，并写出需控制的其他变量。虚构演示条目。"},
+    {"id":"DEMO-Q-BI-2025-01","subject":"生物","year":2025,"target_ids":["DEMO-BI-001"],"question_no":"示例1","title":"识别对照与自变量","prompt":"在自选实验方案中写出对照组、自变量和一个控制变量。虚构演示条目。"},
+    {"id":"DEMO-Q-BI-2022-01","subject":"生物","year":2022,"target_ids":["DEMO-BI-002"],"question_no":"示例2","title":"解释调节结果","prompt":"为自选调节过程写出条件、过程、可观察结果和结论边界。虚构演示条目。"}
+  ],
+  "reviews": [
+    {"id":"DEMO-REVIEW-2026-10","kind":"月度复盘","period":"2026年10月","completed_on":"2026-10-31","summary":"示例复盘：保留已做对的证据，同时明确下一次验证动作。","source":"demo://review/2026-10","limitations":"演示数据；未生成学生练习，未改变真实学情。"}
+  ],
+  "tasks": [
+    {"id":"DEMO-TASK-001","title":"整理示例学习资料","status":"completed","owner":"本地工作流","updated_at":"2026-10-31","note":"演示任务，不需要用户处理。"},
+    {"id":"DEMO-TASK-002","title":"复核示例目标映射","status":"awaiting_review","owner":"复核角色","updated_at":"2026-11-01","note":"候选关系不等于已确认，需回到原始证据复核。"}
+  ]
+}

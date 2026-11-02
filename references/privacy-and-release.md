@@ -8,6 +8,7 @@
 - `agents/openai.yaml`
 - `references/`
 - `scripts/`
+- `dashboard/`（只含通用界面、虚构示例和校验工具）
 - `assets/learning-vault-template`
 - `requirements.txt`
 - `.gitignore`

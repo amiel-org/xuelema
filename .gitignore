@@ -9,6 +9,7 @@ venv/
 
 # Local/generated outputs
 output/
+.playwright-cli/
 tmp/
 temp/
 logs/

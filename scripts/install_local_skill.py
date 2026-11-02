@@ -12,7 +12,7 @@ from datetime import datetime
 from pathlib import Path
 
 SKILL_NAME = "xuelema"
-SKIP_PARTS = {".git", "__pycache__", ".pytest_cache", ".mypy_cache", ".ruff_cache", ".venv", "venv", "tmp", "output", "任务记录"}
+SKIP_PARTS = {".git", "__pycache__", ".pytest_cache", ".mypy_cache", ".ruff_cache", ".playwright-cli", ".venv", "venv", "tmp", "output", "任务记录"}
 FORBIDDEN_SUFFIXES = {".pdf", ".docx", ".jpg", ".jpeg", ".png", ".webp", ".heic", ".xlsx", ".mp4", ".wav"}
 INSTALL_RECEIPT = ".installation.json"
 

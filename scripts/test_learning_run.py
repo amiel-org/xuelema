@@ -809,6 +809,22 @@ class WorkflowTests(unittest.TestCase):
         self.assertNotEqual(targets[0], targets[1])
         self.assertTrue((inbox / "a.jpg").is_file() and (inbox / "b.jpg").is_file())
 
+    def test_installer_ignores_browser_test_artifacts(self):
+        with tempfile.TemporaryDirectory() as td:
+            target = Path(td) / "skills" / "xuelema"
+            artifact = workflow.SKILL / ".playwright-cli" / "browser-check.png"
+            artifact.parent.mkdir(exist_ok=True)
+            artifact.write_bytes(b"not a skill asset")
+            try:
+                self.assertTrue(installer.install(workflow.SKILL, target)["match"])
+                self.assertFalse((target / ".playwright-cli").exists())
+            finally:
+                artifact.unlink()
+                try:
+                    artifact.parent.rmdir()
+                except OSError:
+                    pass  # The directory may also hold current external browser artifacts.
+
     def test_installer_preserves_old_copy_and_checks_drift(self):
         target = self.root / "host" / "skills" / "xuelema"
         self.assertTrue(installer.install(workflow.SKILL, target)["match"])

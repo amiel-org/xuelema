@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="学了么：以证据为中心的家庭学习闭环看板">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%278%27 fill=%27%23286b5b%27/%3E%3Ctext x=%2716%27 y=%2723%27 text-anchor=%27middle%27 font-size=%2722%27 fill=%27white%27%3E%E5%AD%A6%3C/text%3E%3C/svg%3E">
+  <title>学了么 · 学情看板</title>
+  <link rel="stylesheet" href="/assets/style.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#overview" aria-label="学了么首页"><span class="brand-mark">学</span><span>学了么<small>LEARNING EVIDENCE</small></span></a>
+    <nav aria-label="看板模块">
+      <button class="nav-button active" data-view="overview">当前重点</button>
+      <button class="nav-button" data-view="atlas">目标图谱</button>
+      <button class="nav-button" data-view="bank">真题索引</button>
+      <button class="nav-button" data-view="reviews">学习复盘</button>
+      <button class="nav-button" data-view="tasks">执行任务</button>
+    </nav>
+    <button id="printSelection" class="primary small" hidden>打印所选 <span id="selectedCount">0</span></button>
+  </header>
+  <main>
+    <section class="intro">
+      <div><p class="eyebrow" id="term"></p><h1>看见进步，也知道下一步。</h1><p class="subtitle">从原始证据到学习目标，再用新作答验证改善。少而清楚，不拿覆盖率代替学会。</p></div>
+      <div class="date-card"><span>最近复盘</span><strong id="reviewDate">—</strong><small id="reviewPeriod"></small></div>
+    </section>
+    <div id="notice" class="notice"></div>
+    <section id="view-overview" class="view"></section>
+    <section id="view-atlas" class="view" hidden></section>
+    <section id="view-bank" class="view" hidden></section>
+    <section id="view-reviews" class="view" hidden></section>
+    <section id="view-tasks" class="view" hidden></section>
+  </main>
+  <footer>学了么 · 看板只呈现已有证据，不因查看、打印、订正或刷新自动升级掌握。</footer>
+  <dialog id="printDialog"><form method="dialog"><div class="dialog-head"><h2>所选条目 · 演示打印</h2><button class="icon-button" aria-label="关闭">×</button></div><p class="notice">当前只含虚构示例条目。真实题源须另经题面、图材、答案与使用范围核验；此处不自动放行学生练习。</p><div id="printContent"></div><div class="no-print actions"><button id="printNow" type="button" class="primary">调用浏览器打印</button><button class="secondary">关闭</button></div></form></dialog>
+  <script src="/assets/app.js"></script>
+</body>
+</html>
